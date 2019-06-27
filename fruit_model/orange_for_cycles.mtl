@@ -1,0 +1,25 @@
+# Blender MTL File: 'None'
+# Material Count: 2
+
+newmtl Skin
+Ns 249.019608
+Ka 0.000000 0.000000 0.000000
+Kd 0.800000 0.158000 0.033000
+Ks 1.000000 0.689344 0.154515
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd orange_turbosquid/Color.jpg
+map_Bump orange_turbosquid/Normal.jpg
+
+newmtl Stub
+Ns 94.117647
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd orange_turbosquid/Color.jpg
