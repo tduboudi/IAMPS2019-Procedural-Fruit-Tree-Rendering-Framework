@@ -113,8 +113,6 @@ for current_frame_num in range (starting_frame_num, ending_frame_num+1):
     # point toward the empty element location)
     camera.keyframe_insert(data_path='rotation_euler', index=-1)
 
-
-
     ## changing the background image (according to defined change_frequency)
     if current_frame_num % change_frequency == 1:
         current_hdri = next(hdri_cycle_iterator)
@@ -128,6 +126,3 @@ for current_frame_num in range (starting_frame_num, ending_frame_num+1):
     # in the scene generation script)
     bpy.data.scenes['Scene'].render.filepath = './output/images/image_'+str(current_frame_num)
     bpy.ops.render.render(write_still=True)
-
-
-#exec(compile(open(filename).read(), filename, 'exec'))

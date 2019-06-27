@@ -260,7 +260,7 @@ bpy.data.objects["Camera"].constraints["Track To"].up_axis='UP_Y'
 
 # setup of the rendering options that are not going to change during data generation
 
-bpy.data.scenes["Scene"].cycles.device="GPU"
+bpy.data.scenes["Scene"].cycles.device="CPU"
 bpy.data.scenes["Scene"].render.resolution_x = 512
 bpy.data.scenes["Scene"].render.resolution_y = 512
 bpy.data.scenes["Scene"].render.resolution_percentage = 100

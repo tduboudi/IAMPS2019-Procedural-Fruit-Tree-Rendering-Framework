@@ -151,26 +151,11 @@ leaves_settings.size_random = 1
 leaves_settings.use_group_count = True
 leaves_settings.active_dupliweight_index = 0
 
-#modifying the frequency distribution of the four kinds of leaves.
-"""leaves_settings.dupli_weights = 5
-#leaves_settings.particleDupliWeight.count = 5
-leaves_settings.active_dupliweight_index = 1
-#leaves_settings.particleDupliWeight.count = 5
-leaves_settings.active_dupliweight_index = 2
-#leaves_settings.particleDupliWeight.count = 10
-leaves_settings.active_dupliweight_index = 3"""
-#leaves_settings.particleDupliWeight.count = 10
-
-#CyclesCurveSettings.root_width = 1
-#CyclesCurveSettings.radius_scale = 3.22
-#CyclesCurveSettings.use_closetip = True
-
-#adding orange object on layer 3
-bpy.context.scene.layers[0] = False
-bpy.context.scene.layers[1] = False
-bpy.context.scene.layers[2] = True
-
 bpy.ops.import_scene.obj(filepath='./fruit_model/orange_for_cycles.obj')
+
+# to avoid seing the original fruit in the rendered images
+bpy.data.objects['Orange'].layers[1] = True
+bpy.data.objects['Orange'].layers[0] = False
 
 #adding the displace modifiers to the orange to give it random variations in structure
 tex = bpy.data.textures.new("CLOUDS",type='CLOUDS')
