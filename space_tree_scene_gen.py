@@ -1,6 +1,10 @@
 import bpy
 import random as rd
-#filename = "/home/liristd/Code1/orange_tree_gen.py"; exec(compile(open(filename).read(), filename, 'exec'))
+
+#Parameter to set the type of tree: 'a' for an apple tree or 'o' for an orange tree
+fruit_type = 'a'
+
+#filename = "/home/liristd/github/IAMPS2019-Procedural-Fruit-Tree-Rendering-Framework/space_tree_scene_gen.py"; exec(compile(open(filename).read(), filename, 'exec'))
 bpy.data.scenes['Scene'].render.engine = 'CYCLES'
 
 # removing all the objects already existing in the scene
@@ -151,11 +155,23 @@ leaves_settings.size_random = 1
 leaves_settings.use_group_count = True
 leaves_settings.active_dupliweight_index = 0
 
-bpy.ops.import_scene.obj(filepath='./fruit_model/orange_for_cycles.obj')
+#modifying the frequency distribution of the four kinds of leaves.
+"""leaves_settings.dupli_weights = 5
+#leaves_settings.particleDupliWeight.count = 5
+leaves_settings.active_dupliweight_index = 1
+#leaves_settings.particleDupliWeight.count = 5
+leaves_settings.active_dupliweight_index = 2
+#leaves_settings.particleDupliWeight.count = 10
+leaves_settings.active_dupliweight_index = 3"""
+#leaves_settings.particleDupliWeight.count = 10
 
-# to avoid seing the original fruit in the rendered images
-bpy.data.objects['Orange'].layers[1] = True
-bpy.data.objects['Orange'].layers[0] = False
+#CyclesCurveSettings.root_width = 1
+#CyclesCurveSettings.radius_scale = 3.22
+#CyclesCurveSettings.use_closetip = True
+
+#adding orange object on layer 3
+
+bpy.ops.import_scene.obj(filepath='./fruit_model/orange_for_cycles.obj')
 
 #adding the displace modifiers to the orange to give it random variations in structure
 tex = bpy.data.textures.new("CLOUDS",type='CLOUDS')
@@ -170,9 +186,40 @@ mod.texture = tex
 bpy.data.objects['Orange'].modifiers['TEXMODG'].strength = 0.03
 bpy.data.objects['Orange'].modifiers['TEXMODG'].texture_coords = 'GLOBAL'
 
+# to avoid seing the original fruit in the rendered images
+bpy.data.objects['Orange'].layers[2] = True
+bpy.data.objects['Orange'].layers[0] = False
+bpy.data.objects['Orange'].layers[1] = False
+bpy.data.objects['Orange'].layers[3] = False
+
+#adding apple object on layer 4
+bpy.ops.import_scene.obj(filepath='./fruit_model/apple_for_cycles.obj')
+
+bpy.data.objects['pSphere6_Untitled.002'].name = 'Apple'
+
+# to avoid seing the original fruit in the rendered images
+bpy.data.objects['Apple'].layers[3] = True
+bpy.data.objects['Apple'].layers[0] = False
+bpy.data.objects['Apple'].layers[1] = False
+bpy.data.objects['Apple'].layers[2] = False
+
+#adding the displace modifiers to the apple to give it random variations in structure
+tex = bpy.data.textures.new("CLOUDS",type='CLOUDS')
+ob = bpy.data.objects['Apple']
+mod = ob.modifiers.new(name="TEXMOD", type="DISPLACE")
+mod.texture = tex
+bpy.data.objects['Apple'].modifiers['TEXMOD'].strength = 0.2
+
+tex = bpy.data.textures.new("CLOUDS",type='CLOUDS')
+mod = ob.modifiers.new(name="TEXMODG", type="DISPLACE")
+mod.texture = tex
+bpy.data.objects['Apple'].modifiers['TEXMODG'].strength = 0.03
+bpy.data.objects['Apple'].modifiers['TEXMODG'].texture_coords = 'GLOBAL'
+
+
 #adding oranges as particles on the tree
 orange = bpy.data.objects['Orange']
-orange.modifiers.new("Oranges", type='PARTICLE_SYSTEM')
+tree.modifiers.new("Oranges", type='PARTICLE_SYSTEM')
 oranges_particle_system = tree.particle_systems[1]
 oranges_particle_system.seed = 0
 oranges_settings = oranges_particle_system.settings
@@ -195,6 +242,33 @@ oranges_settings.dupli_object = bpy.data.objects['Orange']
 oranges_settings.use_scale_dupli = False
 oranges_settings.particle_size = 0.120
 oranges_settings.size_random = 0.364
+
+#adding apples as particles on the tree
+apple = bpy.data.objects['Apple']
+tree.modifiers.new("Apples", type='PARTICLE_SYSTEM')
+apples_particle_system = tree.particle_systems[2]
+apples_particle_system.seed = 0
+apples_settings = apples_particle_system.settings
+apples_settings.regrow_hair = False
+apples_settings.type = 'HAIR'
+apples_settings.use_advanced_hair = True
+apples_settings.hair_step = 5
+apples_settings.count = 100
+apples_settings.hair_length = 4
+apples_settings.emit_from = 'VERT'
+apples_settings.use_emit_random = True
+apples_settings.use_even_distribution = True
+apples_settings.distribution = 'RAND'
+apples_settings.userjit = 0
+apples_settings.jitter_factor = 1
+apples_settings.use_modifier_stack = False
+apples_settings.use_render_emitter = True
+apples_settings.render_type = 'OBJECT'
+apples_settings.dupli_object = bpy.data.objects['Apple']
+apples_settings.use_scale_dupli = False
+apples_settings.particle_size = 0.070
+apples_settings.size_random = 0.364
+
 
 bpy.context.scene.layers[0] = True
 bpy.context.scene.layers[1] = False
@@ -310,10 +384,6 @@ for object in objects:
     input = leaf_nodes['Translucent BSDF'].inputs['Color']
     leaf_material.node_tree.links.new(output,input)
 
-    """output = leaf_nodes['Object Info'].outputs['Random']
-    input = leaf_nodes['Color Ramp'].inputs['Fac']
-    leaf_material.node_tree.links.new(output,input)"""
-
     output = leaf_nodes['HSV'].outputs['Color']
     input = leaf_nodes['Bright Contrast'].inputs['Color']
     leaf_material.node_tree.links.new(output,input)
@@ -374,6 +444,59 @@ for object in objects:
     output = leaf_nodes['Transparent BSDF'].outputs['BSDF']
     input = leaf_nodes['Mix Shader1'].inputs[1]
     leaf_material.node_tree.links.new(output,input)
+
+#setting up nodes for the apple
+parts_of_apple = ['phongE1','lambert2']
+
+for part in parts_of_apple:
+
+    apple = bpy.data.objects['Apple']
+    apple_material = bpy.data.materials[part]
+    apple_material.use_nodes = True
+    apple_nodes = apple_material.node_tree.nodes
+
+    node = apple_nodes.new("ShaderNodeTexImage")
+    node.name = "Image Texture1"
+    apple_texture_image = bpy.data.images.load('./fruit_model/Apple_Texture_by_AGF81.jpg')
+    apple_material.node_tree.nodes["Image Texture1"].image = apple_texture_image
+
+    node = apple_nodes.new("ShaderNodeTexImage")
+    node.name = "Image Texture2"
+    apple_texture_image = bpy.data.images.load('./fruit_model/Apple_Texture_by_AGF81.jpg')
+    apple_material.node_tree.nodes["Image Texture2"].image = apple_texture_image
+    apple_material.node_tree.nodes['Image Texture2'].color_space = 'NONE'
+
+    output = apple_nodes['Image Texture1'].outputs[0]
+    input = apple_nodes['Mix.002'].inputs[2]
+    apple_material.node_tree.links.new(output,input)
+
+    output = apple_nodes['Image Texture2'].outputs[0]
+    input = apple_nodes['Normal Map'].inputs['Color']
+    apple_material.node_tree.links.new(output,input)
+
+    if part == "lambert2":
+
+            node = apple_nodes.new("ShaderNodeMapping")
+            node.name = "Mapping1"
+            apple_material.node_tree.nodes['Mapping1'].vector_type = 'TEXTURE'
+            apple_material.node_tree.nodes['Mapping1'].scale[0] = 1
+            apple_material.node_tree.nodes['Mapping1'].scale[1] = 1
+            apple_material.node_tree.nodes['Mapping1'].scale[2] = 1
+            apple_material.node_tree.nodes['Mapping1'].rotation[0] = 0
+            apple_material.node_tree.nodes['Mapping1'].rotation[1] = 0
+            apple_material.node_tree.nodes['Mapping1'].rotation[2] = 5
+            apple_material.node_tree.nodes['Mapping1'].translation[0] = 0
+            apple_material.node_tree.nodes['Mapping1'].translation[1] = 1
+            apple_material.node_tree.nodes['Mapping1'].translation[2] = 0
+
+            output = apple_nodes['Mapping1'].outputs['Vector']
+            input = apple_nodes['Image Texture1'].inputs['Vector']
+            apple_material.node_tree.links.new(output,input)
+
+            output = apple_nodes['Mapping1'].outputs['Vector']
+            input = apple_nodes['Image Texture2'].inputs['Vector']
+            apple_material.node_tree.links.new(output,input)
+
 
 #setting up nodes for the orange
 parts_of_orange = ['Skin','Stub']
@@ -471,6 +594,28 @@ for part in parts_of_orange:
     output = orange_nodes['Image Texture2'].outputs[0]
     input = orange_nodes['Normal Map'].inputs['Color']
     orange_material.node_tree.links.new(output,input)
+
+
+bpy.data.objects['Tree'].modifiers['Leaves.001'].name = 'Oranges'
+bpy.data.objects['Tree'].modifiers['Oranges'].name = 'Apples'
+bpy.data.objects['Tree'].modifiers['Apples'].name = 'None'
+
+
+#Setting the particles on the tree (apples or oranges) according to the
+#'fruit_type' parameter
+if fruit_type == 'o':
+
+    bpy.data.objects['Apple'].hide_render = True
+    bpy.data.objects['Apple'].hide = True
+    bpy.data.objects['Orange'].hide_render = False
+    bpy.data.objects['Orange'].hide = False
+
+else:
+
+    bpy.data.objects['Apple'].hide_render = False
+    bpy.data.objects['Apple'].hide = False
+    bpy.data.objects['Orange'].hide_render = True
+    bpy.data.objects['Orange'].hide = True
 
 
 ####################################
@@ -652,7 +797,7 @@ bpy.data.objects["Camera"].constraints["Track To"].up_axis='UP_Y'
 ### setup of the rendering options that are not going to change during data generation ###
 ##########################################################################################
 
-bpy.data.scenes["Scene"].cycles.device="GPU"
+bpy.data.scenes["Scene"].cycles.device="CPU"
 bpy.data.scenes["Scene"].render.resolution_x = 512
 bpy.data.scenes["Scene"].render.resolution_y = 512
 bpy.data.scenes["Scene"].render.resolution_percentage = 100
