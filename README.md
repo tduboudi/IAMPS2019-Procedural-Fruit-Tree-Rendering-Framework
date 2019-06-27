@@ -60,7 +60,7 @@ The given bark texture : https://www.textures.com/download/3dscans0062/127610?q=
 
 The given orange object : https://www.turbosquid.com/3d-models/free-3ds-model-orange-resolution-photorealistic/756550
 
-The given apple object : [TODO]
+The given apple object : https://free3d.com/3d-model/apples-42451.html
 
 
 
