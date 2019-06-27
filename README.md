@@ -36,11 +36,7 @@ This code allows you to reproduce the results of the IAMPS 2019 paper "Toward a 
 
 ## Some examples of generated images
 
-![Alt text](relative/path/to/img.jpg?raw=true "Title")
-![Alt text](relative/path/to/img.jpg?raw=true "Title")
-![Alt text](relative/path/to/img.jpg?raw=true "Title")
-![Alt text](relative/path/to/img.jpg?raw=true "Title")
-![Alt text](relative/path/to/img.jpg?raw=true "Title")
+
 
 ## Comments 
 
