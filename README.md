@@ -8,6 +8,8 @@ This code allows you to reproduce the results of the IAMPS 2019 paper "Toward a 
 
 To use the source code :
 
+(On Ubuntu 18.04)
+
 1 - Download and install Blender (https://www.blender.org/). We recommand using Blender 2.78c instead of Blender 2.79b (the latest as of 27/06/19) as we had problems getting the GPU-rendering to work with the latest version and a GTX NVIDIA 1080. To enable GPU-rendering, follow this link : https://docs.blender.org/manual/en/dev/render/cycles/gpu_rendering.html.
 
 2 - Install the Blender Add-on "Sapling Tree Gen". To do so, go to "File" -> "User preferences" -> "Add-ons" and search for "Sapling Tree Gen" in the research toolbar. Install the "spacetree" Add-on, to do so : go to https://github.com/varkenvarken/spacetree and follow the installation instructions.
