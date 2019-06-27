@@ -16,7 +16,10 @@ To use the source code :
 
 -- HDRIs (360° high-resolution background image) : https://hdrihaven.com/ (as many as you want)
 
--- Leaves textures : 
+-- Leaves textures : http://pngimg.com/download/3668
+                     http://pngimg.com/download/3638
+                     http://pngimg.com/download/3581 
+                     http://pngimg.com/download/3609
 
 -- Bark texture : 
 
