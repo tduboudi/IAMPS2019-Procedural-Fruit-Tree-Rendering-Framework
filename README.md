@@ -36,11 +36,21 @@ This code allows you to reproduce the results of the IAMPS 2019 paper "Toward a 
 
 ## Some examples of generated images
 
-[TODO]
+![Alt text](relative/path/to/img.jpg?raw=true "Title")
+![Alt text](relative/path/to/img.jpg?raw=true "Title")
+![Alt text](relative/path/to/img.jpg?raw=true "Title")
+![Alt text](relative/path/to/img.jpg?raw=true "Title")
+![Alt text](relative/path/to/img.jpg?raw=true "Title")
 
 ## Comments 
 
-[TODO]
+==> You can change the rendering parameters and the scene parameters in the corresponding scripts. In particular, if you're designing a new tree model, don't forget to change the camera movement parameters (the inner box for the empty element and the outer cylinder for the camera).
+
+==> If you're willing to create more complex models and need more blender knowledge, check the tutorials by Blender Guru.
+
+==> We cannot easily make sure that the leaves are attached to the branches by their tails, nor that there won't be fruits and leaves intersecting themselves. This is linked to the fruits and leaves generation as random particles on the tree structure. We do not believe it is going to be a major issue with our data, since complete photorealism does not seem to be needed (cf paper) for deep learning. Furthermore, there is a trade-off between the time spent designing a model and the amout of variations we can put in the rendered images.
+
+
 
 ## Acknowledgements
 
