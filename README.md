@@ -34,13 +34,28 @@ This code allows you to reproduce the results of the IAMPS 2019 paper "Toward a 
 
 8 - Open the rendering script and launch it.
 
+## Some examples of generated images
+
+
 ## Comments 
 
 
 ## Acknowledgements
 
+This work is supported by the french National Research Agency (ANR), through the ARES labcom (grant ANR 16-LCV2-0012-01) and by the CHIST-ERA EU project "Learn-Real".
 
 ## Credits
+
+The given HRDI : https://hdrihaven.com/hdri/?c=outdoor&h=spruit_sunrise
+
+The given leaves textures : https://www.textures.com/download/leaves0089/21795?q=leaves, http://pngimg.com/download/3668, http://pngimg.com/download/3638, http://pngimg.com/download/3581, http://pngimg.com/download/3609
+
+The given bark texture : https://www.textures.com/download/3dscans0062/127610?q=cedar+tree
+
+The given orange object : https://www.turbosquid.com/3d-models/free-3ds-model-orange-resolution-photorealistic/756550
+
+The given apple object : 
+
 
 
 
