@@ -26,7 +26,7 @@ This code allows you to reproduce the results of the IAMPS 2019 paper "Toward a 
 
 -- Fruit 3D models & texture : https://www.turbosquid.com/, https://free3d.com/3d-models/
 
-5 - Download the repository archive or clone it.
+5 - Clone the repository.
 
 6 - Open the Blender GUI and choose the "Scripting" panel configuration (in the top toolbar, next to "Help", it should be at default initially).
 
