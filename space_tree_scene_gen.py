@@ -1,14 +1,19 @@
 import bpy
 import random as rd
 
+###################################################################################
 #Parameter to set the type of tree: 'a' for an apple tree or 'o' for an orange tree
+###################################################################################
 fruit_type = 'a'
 
-#filename = "/home/liristd/github/IAMPS2019-Procedural-Fruit-Tree-Rendering-Framework/space_tree_scene_gen.py"; exec(compile(open(filename).read(), filename, 'exec'))
+############################
+#Chooses the cycles renderer
+############################
 bpy.data.scenes['Scene'].render.engine = 'CYCLES'
 
-# removing all the objects already existing in the scene
-
+############################################################################################
+# removing all the objects (the default cube, lamp and camera) already existing in the scene
+############################################################################################
 for object in bpy.data.objects:
     object.select = True
 bpy.ops.object.delete()
@@ -16,11 +21,11 @@ bpy.ops.object.delete()
 ######################################
 ### architecture of generated tree ###
 ######################################
-
-
 bpy.ops.object.group_instance_add('INVOKE_DEFAULT')
 
+#################################################################################
 #Create a dummy tree and delete it, so that the bark textures are properly loaded.
+#################################################################################
 bpy.ops.mesh.sca_tree(updateTree=True,
 randomSeed=0,
 maxIterations=100,
@@ -42,7 +47,9 @@ for object in bpy.data.objects:
     object.select = True
 bpy.ops.object.delete()
 
+#########################
 #Creating the actual tree
+#########################
 bpy.ops.mesh.sca_tree(updateTree=True,
 randomSeed=0,
 maxIterations=100,
@@ -63,13 +70,21 @@ barkMaterial='BarkBetter1.1')
 
 bpy.data.objects['Tree.001'].name = 'Tree'
 
+##########################################################
 #importing the images of leaves as planes on the 2nd layer
-
+##########################################################
 bpy.context.scene.layers[0] = False
 bpy.context.scene.layers[1] = True
 
-bpy.ops.wm.addon_enable(module='io_import_images_as_planes') #enables 'import image as plane' add-on
+#######################################
+#enables 'import image as plane' add-on
+#######################################
+bpy.ops.wm.addon_enable(module='io_import_images_as_planes')
 
+######################################################
+#import the leaf images as planes on the 2nd layer,
+#and scale them
+######################################################
 bpy.ops.import_image.to_plane(shader='SHADELESS', files=[{'name':
 './leaf_texture/green_leaves_PNG3668.png'}])
 
@@ -90,15 +105,9 @@ bpy.context.scene.layers[0] = True
 bpy.context.scene.layers[1] = False
 
 bpy.data.objects['autumn_leaves_PNG3609'].rotation_euler[2] = -3.14159265/2
-#bpy.data.objects['autumn_leaves_PNG3609'].dimensions[0] = 0.50775
-#bpy.data.objects['autumn_leaves_PNG3609'].dimensions[1] = 0.79030
-#bpy.data.objects['autumn_leaves_PNG3609'].dimensions[2] = 0.00320
 bpy.data.objects['autumn_leaves_PNG3609'].dimensions = [0.50775,0.79030,0.00320]
 
 bpy.data.objects['autumn_leaves_PNG3581'].rotation_euler[2] = -3.14159265/2
-#bpy.data.objects['autumn_leaves_PNG3581'].dimensions[0] = 0.92812
-#bpy.data.objects['autumn_leaves_PNG3581'].dimensions[1] = 0.34389
-#bpy.data.objects['autumn_leaves_PNG3581'].dimensions[2] = 0.01836
 bpy.data.objects['autumn_leaves_PNG3581'].dimensions = [0.92812,0.34389,0.01836]
 
 bpy.data.objects['green_leaves_PNG3638'].dimensions[0] = 0.45702
@@ -109,27 +118,11 @@ bpy.data.objects['green_leaves_PNG3668'].dimensions[0] = 0.39461
 bpy.data.objects['green_leaves_PNG3668'].dimensions[1] = 1.00073
 bpy.data.objects['green_leaves_PNG3668'].dimensions[2] = 0.00200
 
-
-#create a group of the four leaves
-
-bpy.ops.group.create(name='Leaves')
-grp = bpy.data.groups.get('Leaves')
-objects_to_add = ['autumn_leaves_PNG3609','autumn_leaves_PNG3581',
-'green_leaves_PNG3638','green_leaves_PNG3668']
-for name in objects_to_add:
-    obj = bpy.data.objects[name]
-    grp.objects.link(obj)
-
-#add leaves as particles to the tree
-
+##################################################################
+#add 4 different types of leaves as 4 particle systems to the tree
+##################################################################
 tree = bpy.data.objects['Tree']
-tree.modifiers.new("Leaves", type='PARTICLE_SYSTEM')
-
-
-#add leaves as particles to the tree
-
-tree = bpy.data.objects['Tree']
-tree.modifiers.new("Leaves", type='PARTICLE_SYSTEM')
+tree.modifiers.new("Leaves1", type='PARTICLE_SYSTEM')
 leaves_particle_system = tree.particle_systems[0]
 leaves_particle_system.seed = 54
 leaves_settings = leaves_particle_system.settings
@@ -137,7 +130,7 @@ leaves_settings.regrow_hair = True
 leaves_settings.type = 'HAIR'
 leaves_settings.use_advanced_hair = True
 leaves_settings.hair_step = 5
-leaves_settings.count = 5000
+leaves_settings.count = 250
 leaves_settings.hair_length = 4
 leaves_settings.emit_from = 'FACE'
 leaves_settings.use_emit_random = True
@@ -147,33 +140,95 @@ leaves_settings.userjit = 0
 leaves_settings.jitter_factor = 1
 leaves_settings.use_modifier_stack = True
 leaves_settings.use_render_emitter = True
-leaves_settings.render_type = 'GROUP'
-leaves_settings.dupli_group = bpy.data.groups['Leaves']
+leaves_settings.render_type = 'OBJECT'
+leaves_settings.dupli_group = bpy.data.objects['autumn_leaves_PNG3581']
 leaves_settings.use_scale_dupli = False
 leaves_settings.particle_size = 0.380
 leaves_settings.size_random = 1
-leaves_settings.use_group_count = True
-leaves_settings.active_dupliweight_index = 0
 
-#modifying the frequency distribution of the four kinds of leaves.
-"""leaves_settings.dupli_weights = 5
-#leaves_settings.particleDupliWeight.count = 5
-leaves_settings.active_dupliweight_index = 1
-#leaves_settings.particleDupliWeight.count = 5
-leaves_settings.active_dupliweight_index = 2
-#leaves_settings.particleDupliWeight.count = 10
-leaves_settings.active_dupliweight_index = 3"""
-#leaves_settings.particleDupliWeight.count = 10
+tree = bpy.data.objects['Tree']
+tree.modifiers.new("Leaves2", type='PARTICLE_SYSTEM')
+leaves_particle_system = tree.particle_systems[1]
+leaves_particle_system.seed = 54
+leaves_settings = leaves_particle_system.settings
+leaves_settings.regrow_hair = True
+leaves_settings.type = 'HAIR'
+leaves_settings.use_advanced_hair = True
+leaves_settings.hair_step = 5
+leaves_settings.count = 500
+leaves_settings.hair_length = 4
+leaves_settings.emit_from = 'FACE'
+leaves_settings.use_emit_random = True
+leaves_settings.use_even_distribution = True
+leaves_settings.distribution = 'RAND'
+leaves_settings.userjit = 0
+leaves_settings.jitter_factor = 1
+leaves_settings.use_modifier_stack = True
+leaves_settings.use_render_emitter = True
+leaves_settings.render_type = 'OBJECT'
+leaves_settings.dupli_group = bpy.data.objects['autumn_leaves_PNG3609']
+leaves_settings.use_scale_dupli = False
+leaves_settings.particle_size = 0.380
+leaves_settings.size_random = 1
 
-#CyclesCurveSettings.root_width = 1
-#CyclesCurveSettings.radius_scale = 3.22
-#CyclesCurveSettings.use_closetip = True
+tree = bpy.data.objects['Tree']
+tree.modifiers.new("Leaves3", type='PARTICLE_SYSTEM')
+leaves_particle_system = tree.particle_systems[2]
+leaves_particle_system.seed = 54
+leaves_settings = leaves_particle_system.settings
+leaves_settings.regrow_hair = True
+leaves_settings.type = 'HAIR'
+leaves_settings.use_advanced_hair = True
+leaves_settings.hair_step = 5
+leaves_settings.count = 1000
+leaves_settings.hair_length = 4
+leaves_settings.emit_from = 'FACE'
+leaves_settings.use_emit_random = True
+leaves_settings.use_even_distribution = True
+leaves_settings.distribution = 'RAND'
+leaves_settings.userjit = 0
+leaves_settings.jitter_factor = 1
+leaves_settings.use_modifier_stack = True
+leaves_settings.use_render_emitter = True
+leaves_settings.render_type = 'OBJECT'
+leaves_settings.dupli_group = bpy.data.objects['green_leaves_PNG3638']
+leaves_settings.use_scale_dupli = False
+leaves_settings.particle_size = 0.380
+leaves_settings.size_random = 1
 
-#adding orange object on layer 3
+tree = bpy.data.objects['Tree']
+tree.modifiers.new("Leaves4", type='PARTICLE_SYSTEM')
+leaves_particle_system = tree.particle_systems[3]
+leaves_particle_system.seed = 54
+leaves_settings = leaves_particle_system.settings
+leaves_settings.regrow_hair = True
+leaves_settings.type = 'HAIR'
+leaves_settings.use_advanced_hair = True
+leaves_settings.hair_step = 5
+leaves_settings.count = 1000
+leaves_settings.hair_length = 4
+leaves_settings.emit_from = 'FACE'
+leaves_settings.use_emit_random = True
+leaves_settings.use_even_distribution = True
+leaves_settings.distribution = 'RAND'
+leaves_settings.userjit = 0
+leaves_settings.jitter_factor = 1
+leaves_settings.use_modifier_stack = True
+leaves_settings.use_render_emitter = True
+leaves_settings.render_type = 'OBJECT'
+leaves_settings.dupli_group = bpy.data.objects['green_leaves_PNG3668']
+leaves_settings.use_scale_dupli = False
+leaves_settings.particle_size = 0.380
+leaves_settings.size_random = 1
 
+#############################
+#add orange object on layer 3
+#############################
 bpy.ops.import_scene.obj(filepath='./fruit_model/orange_for_cycles.obj')
 
+######################################################################################
 #adding the displace modifiers to the orange to give it random variations in structure
+######################################################################################
 tex = bpy.data.textures.new("CLOUDS",type='CLOUDS')
 ob = bpy.data.objects['Orange']
 mod = ob.modifiers.new(name="TEXMOD", type="DISPLACE")
@@ -186,24 +241,32 @@ mod.texture = tex
 bpy.data.objects['Orange'].modifiers['TEXMODG'].strength = 0.03
 bpy.data.objects['Orange'].modifiers['TEXMODG'].texture_coords = 'GLOBAL'
 
-# to avoid seing the original fruit in the rendered images
+###########################################################
+# to avoid seing the original orange in the rendered images
+###########################################################
 bpy.data.objects['Orange'].layers[2] = True
 bpy.data.objects['Orange'].layers[0] = False
 bpy.data.objects['Orange'].layers[1] = False
 bpy.data.objects['Orange'].layers[3] = False
 
+###############################
 #adding apple object on layer 4
+###############################
 bpy.ops.import_scene.obj(filepath='./fruit_model/apple_for_cycles.obj')
 
 bpy.data.objects['pSphere6_Untitled.002'].name = 'Apple'
 
-# to avoid seing the original fruit in the rendered images
+##########################################################
+# to avoid seing the original apple in the rendered images
+##########################################################
 bpy.data.objects['Apple'].layers[3] = True
 bpy.data.objects['Apple'].layers[0] = False
 bpy.data.objects['Apple'].layers[1] = False
 bpy.data.objects['Apple'].layers[2] = False
 
+#####################################################################################
 #adding the displace modifiers to the apple to give it random variations in structure
+#####################################################################################
 tex = bpy.data.textures.new("CLOUDS",type='CLOUDS')
 ob = bpy.data.objects['Apple']
 mod = ob.modifiers.new(name="TEXMOD", type="DISPLACE")
@@ -216,11 +279,12 @@ mod.texture = tex
 bpy.data.objects['Apple'].modifiers['TEXMODG'].strength = 0.03
 bpy.data.objects['Apple'].modifiers['TEXMODG'].texture_coords = 'GLOBAL'
 
-
+########################################
 #adding oranges as particles on the tree
+########################################
 orange = bpy.data.objects['Orange']
 tree.modifiers.new("Oranges", type='PARTICLE_SYSTEM')
-oranges_particle_system = tree.particle_systems[1]
+oranges_particle_system = tree.particle_systems[4]
 oranges_particle_system.seed = 0
 oranges_settings = oranges_particle_system.settings
 oranges_settings.regrow_hair = False
@@ -243,10 +307,12 @@ oranges_settings.use_scale_dupli = False
 oranges_settings.particle_size = 0.120
 oranges_settings.size_random = 0.364
 
+#######################################
 #adding apples as particles on the tree
+#######################################
 apple = bpy.data.objects['Apple']
 tree.modifiers.new("Apples", type='PARTICLE_SYSTEM')
-apples_particle_system = tree.particle_systems[2]
+apples_particle_system = tree.particle_systems[5]
 apples_particle_system.seed = 0
 apples_settings = apples_particle_system.settings
 apples_settings.regrow_hair = False
@@ -269,12 +335,9 @@ apples_settings.use_scale_dupli = False
 apples_settings.particle_size = 0.070
 apples_settings.size_random = 0.364
 
-
-bpy.context.scene.layers[0] = True
-bpy.context.scene.layers[1] = False
-bpy.context.scene.layers[2] = False
-
+########################################
 #adding softbody modifiers to the leaves
+########################################
 objects = ['autumn_leaves_PNG3581','autumn_leaves_PNG3609',
 'green_leaves_PNG3638','green_leaves_PNG3668']
 
@@ -282,14 +345,18 @@ for object in objects:
     ob = bpy.data.objects[object]
     mod = ob.modifiers.new(name="SB", type="SOFT_BODY")
 
+################################
 #Setting up nodes for the leaves
+################################
 for object in objects:
     leaf = bpy.data.objects[object]
     leaf_material = bpy.data.materials[object]
     leaf_material.use_nodes = True
     leaf_nodes = leaf_material.node_tree.nodes
 
+    ##########################
     #delete all existing nodes
+    ##########################
     for node in leaf_nodes:
         leaf_nodes.remove(node)
 
@@ -374,6 +441,9 @@ for object in objects:
     node = leaf_nodes.new("ShaderNodeOutputMaterial")
     node.name = "Material Output"
 
+    #############################
+    #Connecting the created nodes
+    #############################
     output = leaf_nodes['Image Texture'].outputs['Color']
     input = leaf_nodes['HSV'].inputs['Color']
     leaf_material.node_tree.links.new(output, input)
@@ -445,7 +515,9 @@ for object in objects:
     input = leaf_nodes['Mix Shader1'].inputs[1]
     leaf_material.node_tree.links.new(output,input)
 
+###############################
 #setting up nodes for the apple
+###############################
 parts_of_apple = ['phongE1','lambert2']
 
 for part in parts_of_apple:
@@ -466,6 +538,9 @@ for part in parts_of_apple:
     apple_material.node_tree.nodes["Image Texture2"].image = apple_texture_image
     apple_material.node_tree.nodes['Image Texture2'].color_space = 'NONE'
 
+    #############################
+    #Connecting the created nodes
+    #############################
     output = apple_nodes['Image Texture1'].outputs[0]
     input = apple_nodes['Mix.002'].inputs[2]
     apple_material.node_tree.links.new(output,input)
@@ -489,6 +564,9 @@ for part in parts_of_apple:
             apple_material.node_tree.nodes['Mapping1'].translation[1] = 1
             apple_material.node_tree.nodes['Mapping1'].translation[2] = 0
 
+            #############################
+            #Connecting the created nodes
+            #############################
             output = apple_nodes['Mapping1'].outputs['Vector']
             input = apple_nodes['Image Texture1'].inputs['Vector']
             apple_material.node_tree.links.new(output,input)
@@ -497,8 +575,9 @@ for part in parts_of_apple:
             input = apple_nodes['Image Texture2'].inputs['Vector']
             apple_material.node_tree.links.new(output,input)
 
-
+################################
 #setting up nodes for the orange
+################################
 parts_of_orange = ['Skin','Stub']
 
 for part in parts_of_orange:
@@ -559,6 +638,9 @@ for part in parts_of_orange:
     orange_material.node_tree.nodes['Color Ramp'].color_ramp.elements[2].color[1] = 0.314
     orange_material.node_tree.nodes['Color Ramp'].color_ramp.elements[2].color[2] = 0.027
 
+    #############################
+    #Connecting the created nodes
+    #############################
     output = orange_nodes['Texture Coords'].outputs['UV']
     input = orange_nodes['Mapping1'].inputs['Vector']
     orange_material.node_tree.links.new(output,input)
@@ -600,9 +682,10 @@ bpy.data.objects['Tree'].modifiers['Leaves.001'].name = 'Oranges'
 bpy.data.objects['Tree'].modifiers['Oranges'].name = 'Apples'
 bpy.data.objects['Tree'].modifiers['Apples'].name = 'None'
 
-
+#######################################################################
 #Setting the particles on the tree (apples or oranges) according to the
 #'fruit_type' parameter
+#######################################################################
 if fruit_type == 'o':
 
     bpy.data.objects['Apple'].hide_render = True
@@ -636,8 +719,10 @@ bpy.data.materials["autumn_leaves_PNG3609"].pass_index = 2
 bpy.data.materials["green_leaves_PNG3638"].pass_index = 2
 bpy.data.materials["green_leaves_PNG3668"].pass_index = 2
 
+##########################################################################
 # creation of a scene material
 # no need to remove the existing nodes this time, we are going to use them
+##########################################################################
 bpy.data.scenes["Scene"].use_nodes = True
 scene_nodes = bpy.data.scenes["Scene"].node_tree.nodes
 
@@ -655,9 +740,11 @@ node = scene_nodes.new("CompositorNodeValToRGB")
 node.name = "Color Ramp Depth"
 # nothing to change for the depth map color ramp
 
+#####################################################################################
 # creation of the node used for semantic segmentation labels
 # the color_ramp.elements are used to define what color each type of
 # object will be. (leaf -> blue, tree -> brown, fruit -> yellow, bakground -> black).
+#####################################################################################
 node = scene_nodes.new("CompositorNodeValToRGB")
 node.name = "Color Ramp Normal"
 
@@ -711,8 +798,10 @@ node = scene_nodes.new("CompositorNodeOutputFile")
 node.name = "File Output Material Index"
 node.base_path = './output/segmentation_map'
 
+##############################################################################
 # linking of the nodes together (have a look a the nodes in the blender GUI to
 # understand the function of each node)
+##############################################################################
 output = scene_nodes["Render Layers"].outputs['Depth']
 input = scene_nodes["Normalize Depth"].inputs[0]
 bpy.data.scenes["Scene"].node_tree.links.new(output, input)
