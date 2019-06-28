@@ -38,15 +38,15 @@ This code allows you to reproduce the results of the IAMPS 2019 paper "Toward a 
 
 ![](example_images/random_images.png?raw=true "Random Images")
 
-###Random Images
+### Random Images
 
 ![](example_images/real_vs_fake.png?raw=true "Real (top row) vs Fake (bottow row) Images")
 
-###Real (top row) vs Fake (bottow row) Images
+### Real (top row) vs Fake (bottow row) Images
 
 ![](example_images/variations.png?raw=true "Variations in Images (day/night, backround, pow)")
 
-###Variations in Images (day/night, backround, pow)
+### Variations in Images (day/night, backround, pow)
 
 
 ## Comments 
