@@ -5,9 +5,10 @@ import os
 import itertools
 
 # This script is used to generate the images. It is meant to be used after the
-# scene generation script. It controls parameters such as the number of images
-# that are going to be rendered, the change frequency for the background images,
-# the rendering quality, etc.
+# scene generation scripts (sapling_tree_scene_gen.py, space_tree_scene_gen.py).
+#It controls parameters such as the number of images that are going to be
+#rendered, the change frequency for the background images,the rendering quality,
+#etc.
 
 ###################################
 ### Background image parameters ###
@@ -38,7 +39,7 @@ empty = bpy.data.objects['Empty']
 bpy.data.scenes["Scene"].cycles.samples = 64
 
 # Blender >2.79 only. used to further improve the images quality
-# bpy.context.scene.render.layers[0].cycles.use_denoising = True
+bpy.context.scene.render.layers[0].cycles.use_denoising = True
 
 #####################################################
 ### Parameters of camera position and orientation ###
@@ -49,22 +50,22 @@ pi = 3.14159265
 # definition of the 3D box the empty element (to which the camera is
 # going to point toward) is going to be sampled from
 
-x_range = [-5,5]
-y_range = [-5,5]
-z_range = [3,3]
+x_range = [-3,3]
+y_range = [-3,3]
+z_range = [2,6]
 
 # definition of the hollow cylinder the camera position is going to be sampled from
 
 # height original
 #h2 = 10
 #h1 = 3
-h2 = 8
-h1 = 3
+h2 = 5.2
+h1 = 5
 # radius original
 #r1 = 3
 #r2 = 10
-r1 = 5
-r2 = 6
+r1 = 9
+r2 = 10
 
 ############################
 ### Animation parameters ###
@@ -94,8 +95,7 @@ for current_frame_num in range (starting_frame_num, ending_frame_num+1):
     camera.location[0] = (r1+alpha*(r2-r1))*math.cos(theta)
     camera.location[1] = (r1+alpha*(r2-r1))*math.sin(theta)
     camera.location[2] = (h2-h1)*rd.random()+h1
-    camera.rotation_euler[2] = camera.rotation_euler[2] + pi
-
+    
     # recording the camera location at the current timestep
     camera.keyframe_insert(data_path='location', index=-1)
 

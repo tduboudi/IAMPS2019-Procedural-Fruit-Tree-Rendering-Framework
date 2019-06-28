@@ -118,9 +118,28 @@ bpy.data.objects['green_leaves_PNG3668'].dimensions[0] = 0.39461
 bpy.data.objects['green_leaves_PNG3668'].dimensions[1] = 1.00073
 bpy.data.objects['green_leaves_PNG3668'].dimensions[2] = 0.00200
 
+##################################
+#create a group of the four leaves
+##################################
+bpy.ops.group.create(name='Leaves')
+grp = bpy.data.groups.get('Leaves')
+objects_to_add = ['autumn_leaves_PNG3609','autumn_leaves_PNG3581',
+'green_leaves_PNG3638','green_leaves_PNG3668']
+for name in objects_to_add:
+    obj = bpy.data.objects[name]
+    grp.objects.link(obj)
+
+####################################
+#add leaves as particles to the tree
+####################################
+tree = bpy.data.objects['Tree']
+tree.modifiers.new("Leaves", type='PARTICLE_SYSTEM')
+
 ##################################################################
 #add 4 different types of leaves as 4 particle systems to the tree
 ##################################################################
+#add leaves as particles to the tree
+
 tree = bpy.data.objects['Tree']
 tree.modifiers.new("Leaves1", type='PARTICLE_SYSTEM')
 leaves_particle_system = tree.particle_systems[0]
@@ -141,10 +160,12 @@ leaves_settings.jitter_factor = 1
 leaves_settings.use_modifier_stack = True
 leaves_settings.use_render_emitter = True
 leaves_settings.render_type = 'OBJECT'
-leaves_settings.dupli_group = bpy.data.objects['autumn_leaves_PNG3581']
+leaves_settings.dupli_object = bpy.data.objects['autumn_leaves_PNG3581']
 leaves_settings.use_scale_dupli = False
-leaves_settings.particle_size = 0.380
+leaves_settings.particle_size = 0.250
 leaves_settings.size_random = 1
+leaves_settings.use_group_count = True
+leaves_settings.active_dupliweight_index = 0
 
 tree = bpy.data.objects['Tree']
 tree.modifiers.new("Leaves2", type='PARTICLE_SYSTEM')
@@ -155,7 +176,7 @@ leaves_settings.regrow_hair = True
 leaves_settings.type = 'HAIR'
 leaves_settings.use_advanced_hair = True
 leaves_settings.hair_step = 5
-leaves_settings.count = 500
+leaves_settings.count = 1500
 leaves_settings.hair_length = 4
 leaves_settings.emit_from = 'FACE'
 leaves_settings.use_emit_random = True
@@ -166,10 +187,12 @@ leaves_settings.jitter_factor = 1
 leaves_settings.use_modifier_stack = True
 leaves_settings.use_render_emitter = True
 leaves_settings.render_type = 'OBJECT'
-leaves_settings.dupli_group = bpy.data.objects['autumn_leaves_PNG3609']
+leaves_settings.dupli_object = bpy.data.objects['autumn_leaves_PNG3609']
 leaves_settings.use_scale_dupli = False
-leaves_settings.particle_size = 0.380
+leaves_settings.particle_size = 0.250
 leaves_settings.size_random = 1
+leaves_settings.use_group_count = True
+leaves_settings.active_dupliweight_index = 0
 
 tree = bpy.data.objects['Tree']
 tree.modifiers.new("Leaves3", type='PARTICLE_SYSTEM')
@@ -180,7 +203,7 @@ leaves_settings.regrow_hair = True
 leaves_settings.type = 'HAIR'
 leaves_settings.use_advanced_hair = True
 leaves_settings.hair_step = 5
-leaves_settings.count = 1000
+leaves_settings.count = 2000
 leaves_settings.hair_length = 4
 leaves_settings.emit_from = 'FACE'
 leaves_settings.use_emit_random = True
@@ -191,10 +214,12 @@ leaves_settings.jitter_factor = 1
 leaves_settings.use_modifier_stack = True
 leaves_settings.use_render_emitter = True
 leaves_settings.render_type = 'OBJECT'
-leaves_settings.dupli_group = bpy.data.objects['green_leaves_PNG3638']
+leaves_settings.dupli_object = bpy.data.objects['green_leaves_PNG3638']
 leaves_settings.use_scale_dupli = False
-leaves_settings.particle_size = 0.380
+leaves_settings.particle_size = 0.250
 leaves_settings.size_random = 1
+leaves_settings.use_group_count = True
+leaves_settings.active_dupliweight_index = 0
 
 tree = bpy.data.objects['Tree']
 tree.modifiers.new("Leaves4", type='PARTICLE_SYSTEM')
@@ -205,7 +230,7 @@ leaves_settings.regrow_hair = True
 leaves_settings.type = 'HAIR'
 leaves_settings.use_advanced_hair = True
 leaves_settings.hair_step = 5
-leaves_settings.count = 1000
+leaves_settings.count = 2000
 leaves_settings.hair_length = 4
 leaves_settings.emit_from = 'FACE'
 leaves_settings.use_emit_random = True
@@ -216,10 +241,12 @@ leaves_settings.jitter_factor = 1
 leaves_settings.use_modifier_stack = True
 leaves_settings.use_render_emitter = True
 leaves_settings.render_type = 'OBJECT'
-leaves_settings.dupli_group = bpy.data.objects['green_leaves_PNG3668']
+leaves_settings.dupli_object = bpy.data.objects['green_leaves_PNG3668']
 leaves_settings.use_scale_dupli = False
-leaves_settings.particle_size = 0.380
+leaves_settings.particle_size = 0.250
 leaves_settings.size_random = 1
+leaves_settings.use_group_count = True
+leaves_settings.active_dupliweight_index = 0
 
 #############################
 #add orange object on layer 3
@@ -334,6 +361,11 @@ apples_settings.dupli_object = bpy.data.objects['Apple']
 apples_settings.use_scale_dupli = False
 apples_settings.particle_size = 0.070
 apples_settings.size_random = 0.364
+
+
+bpy.context.scene.layers[0] = True
+bpy.context.scene.layers[1] = False
+bpy.context.scene.layers[2] = False
 
 ########################################
 #adding softbody modifiers to the leaves
