@@ -46,7 +46,7 @@ This code allows you to reproduce the results of the IAMPS 2019 paper "Toward a 
 
 ==> We cannot easily make sure that the leaves are attached to the branches by their tails, nor that there won't be fruits and leaves intersecting themselves. This is linked to the fruits and leaves generation as random particles on the tree structure. We do not believe it is going to be a major issue with our data, since complete photorealism does not seem to be needed (cf paper) for deep learning. Besides, there is a trade-off between the time spent designing a model and the amout of variations we can put in the rendered images.
 
-==> The two scene generation scripts are using a different Blender Add-on. There are more options and customizations available in the space_tree_scene_gen.py script (such as different kinds of leaves on the same tree, slightly differents fruits)
+==> The two scene generation scripts are using a different Blender Add-on. There are more options and customizations available in the space_tree_scene_gen.py script (such as different kinds of leaves on the same tree, slightly differents fruits).
 
 ## Acknowledgements
 
