@@ -36,14 +36,10 @@ This code allows you to reproduce the results of the IAMPS 2019 paper "Toward a 
 
 ## Some examples of generated images
 
-| ------------- | ------------- |
-| Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  |
+![](example_images/random_images.png?raw=true "Random Images")
+![](example_images/real_vs_fake.png?raw=true "Real (top row) vs Fake (bottow row) Images")
+![](example_images/variations.png?raw=true "Variations in Image (day/night, backround, pow)")
 
-![](example_images/big_orange.png?raw=true)
-![](example_images/image_345?raw=true)
-![](example_images/image_2926?raw=true)
-![](example_images/apple.jpg?raw=true)
 
 ## Comments 
 
