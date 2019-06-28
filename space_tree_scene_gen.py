@@ -709,11 +709,6 @@ for part in parts_of_orange:
     input = orange_nodes['Normal Map'].inputs['Color']
     orange_material.node_tree.links.new(output,input)
 
-
-bpy.data.objects['Tree'].modifiers['Leaves.001'].name = 'Oranges'
-bpy.data.objects['Tree'].modifiers['Oranges'].name = 'Apples'
-bpy.data.objects['Tree'].modifiers['Apples'].name = 'None'
-
 #######################################################################
 #Setting the particles on the tree (apples or oranges) according to the
 #'fruit_type' parameter
